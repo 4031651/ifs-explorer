@@ -1,0 +1,30 @@
+{
+  "name": "ifs-explorer",
+  "version": "1.0.0",
+  "description": "IFS Explorer",
+  "private": true,
+  "author": "Sergey Tsapenko",
+  "license": "ISC",
+  "scripts": {
+    "build": "webpack",
+    "start": "webpack -w"
+  },
+  "devDependencies": {
+    "@types/dat.gui": "^0.7.5",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "eslint": "^7.12.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-import-resolver-typescript": "^2.3.0",
+    "eslint-plugin-import": "^2.22.1",
+    "prettier": "2.1.2",
+    "ts-loader": "^8.0.9",
+    "typescript": "^4.0.5",
+    "webpack": "^5.4.0",
+    "webpack-cli": "^4.2.0"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.7",
+    "fractals": "^1.0.0"
+  }
+}
