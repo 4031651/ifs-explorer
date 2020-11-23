@@ -12,8 +12,29 @@ export class RadialMatrix extends Matrix {
   ['Translate Y'] = 0;
   Probability = 0;
 
-  constructor(name: string, m: IIFSMatrix) {
-    super(name, m);
+  constructor(name: string, m: IIFSMatrix, markerRoot: HTMLElement) {
+    super(name, m, markerRoot);
+
+    this.set(m);
+  }
+
+  createMarker() {
+    this.marker = {
+      element: document.createElement('div'),
+      onChange() {
+        /* */
+      },
+      destroy() {
+        /* */
+      },
+      show() {
+        /* */
+      },
+    };
+  }
+
+  set(m: IIFSMatrix) {
+    this.matrix = m;
 
     this['Scale X'] = m.a;
     this['Scale Y'] = m.b;
@@ -21,6 +42,8 @@ export class RadialMatrix extends Matrix {
     this['Translate X'] = m.e;
     this['Translate Y'] = m.f;
     this.Probability = m.p;
+
+    this.handleChange();
   }
 
   toMatrix(): IIFSMatrix {

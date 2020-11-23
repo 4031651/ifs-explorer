@@ -2,6 +2,7 @@ import { IIFSMatrix } from 'fractals';
 import * as dat from 'dat.gui';
 
 import { Matrix } from './Base';
+import { AffineMarker } from './markers/Affine';
 
 // eslint-disable-next-line import/prefer-default-export
 export class AffineMatrix extends Matrix {
@@ -12,8 +13,14 @@ export class AffineMatrix extends Matrix {
   ['Translate X'] = 0;
   ['Translate Y'] = 0;
 
-  constructor(name: string, m: IIFSMatrix) {
-    super(name, m);
+  constructor(name: string, m: IIFSMatrix, markerRoot: HTMLElement) {
+    super(name, m, markerRoot);
+
+    this.set(m);
+  }
+
+  set(m: IIFSMatrix) {
+    this.matrix = m;
 
     this['Xx Factor (a)'] = m.a;
     this['Xy Factor (b)'] = m.b;
@@ -21,6 +28,13 @@ export class AffineMatrix extends Matrix {
     this['Yy Factor (d)'] = m.d;
     this['Translate X'] = m.e;
     this['Translate Y'] = m.f;
+    this.Probability = m.p;
+
+    this.handleChange();
+  }
+
+  createMarker() {
+    this.marker = new AffineMarker(this.toMatrix());
   }
 
   toMatrix(): IIFSMatrix {

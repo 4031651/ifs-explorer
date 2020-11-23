@@ -14,7 +14,10 @@
     "noImplicitThis": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+
+    "jsx": "react",
+    "jsxFactory": "elem"
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules"]
