@@ -241,7 +241,6 @@ main {
 .marker .box {
   --box-size: 100px;
   --margin: var(--box-size) / -2 + var(--marker-size) / 2;
-  --back-angle: calc(var(--angle) * -1);
   border: 1px solid var(--color);
   width: var(--box-size);
   height: var(--box-size);
@@ -264,12 +263,16 @@ main {
 }
 .marker .box .r:after {
   content: 'Rotate ' var(--angle-txt);
-  display: inline-block;
+  display: none;
   padding-left: 0.75em;
   color: var(--text-color);
   transform: translateY(-33%) rotate(var(--back-angle));
   white-space: nowrap;
   pointer-events: none;
+}
+.marker .box .r:hover:after,
+.marker .box .r:active:after {
+  display: inline-block;
 }
 .marker .box .s {
   --skew-angle: 0deg;
@@ -296,12 +299,16 @@ main {
 
 .marker .box .s > div:after {
   content: 'Skew ' var(--skew-angle-txt);
-  display: inline-block;
+  display: none;
   color: var(--text-color);
   transform: translate(-100%, -0.5em);
   white-space: nowrap;
   padding-right: 0.5em;
   pointer-events: none;
+}
+.marker .box .s > div:hover:after,
+.marker .box .s > div:active:after {
+  display: inline-block;
 }
 
 .marker .box .scale-x {
@@ -318,7 +325,7 @@ main {
 }
 .marker .box .scale-x:after {
   content: 'Scale X ' var(--scale-x);
-  display: inline-block;
+  display: none;
   padding-left: 0.75em;
   color: var(--text-color);
   transform: translateY(-100%) rotate(var(--back-angle));
@@ -326,6 +333,10 @@ main {
   white-space: nowrap;
   pointer-events: none;
 }
+.marker .box .scale-x:hover:after {
+  display: inline-block;
+}
+
 .marker .box .scale-y {
   position: absolute;
   top: 10%;
@@ -340,7 +351,7 @@ main {
 }
 .marker .box .scale-y:after {
   content: 'Scale Y ' var(--scale-y);
-  display: inline-block;
+  display: none;
   color: var(--text-color);
   transform: translateY(-100%) rotate(calc(90deg + var(--back-angle)));
   position: absolute;
@@ -348,6 +359,9 @@ main {
   left: 50%;
   white-space: nowrap;
   pointer-events: none;
+}
+.marker .box .scale-y:hover:after {
+  display: inline-block;
 }
 
 .dg ul li.separator {
