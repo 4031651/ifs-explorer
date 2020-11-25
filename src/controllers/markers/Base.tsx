@@ -280,14 +280,14 @@ export abstract class BaseMarker {
             on-input={this.handleScaleYInput}
             on-change={this.handleScaleYChange}
           />
+          <div
+            draggable
+            class="trans"
+            on-dragstart={this.handleDragTranslateStart}
+            on-drag={this.handleDragTranslate}
+            on-dragend={this.handleDragEnd}
+          />
         </div>
-        <div
-          draggable
-          class="trans"
-          on-dragstart={this.handleDragTranslateStart}
-          on-drag={this.handleDragTranslate}
-          on-dragend={this.handleDragEnd}
-        />
       </div>
     );
 
