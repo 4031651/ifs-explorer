@@ -12,8 +12,8 @@ export class RadialMatrix extends Matrix {
   ['Translate Y'] = 0;
   Probability = 0;
 
-  constructor(name: string, m: IIFSMatrix, markerRoot: HTMLElement) {
-    super(name, m, markerRoot);
+  constructor(name: string, m: IIFSMatrix, density: number, markerRoot: HTMLElement) {
+    super(name, m, density, markerRoot);
 
     this.set(m);
   }

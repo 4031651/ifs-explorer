@@ -88,10 +88,11 @@ class Explorer {
       const color = `hsl(${hChunk * i}, 100%, 50%)`;
 
       const copy = { ...config.matrices[i], color };
+      const mainElem = document.querySelector('main');
       const m =
         this.Equation === 'affine'
-          ? new AffineMatrix(`Matrix: ${i + 1}`, copy, document.querySelector('main'))
-          : new RadialMatrix(`Matrix: ${i + 1}`, copy, document.querySelector('main'));
+          ? new AffineMatrix(`Matrix: ${i + 1}`, copy, this.Density, mainElem)
+          : new RadialMatrix(`Matrix: ${i + 1}`, copy, this.Density, mainElem);
 
       m.addControllers(this.gui);
       m.onChange(this.update);

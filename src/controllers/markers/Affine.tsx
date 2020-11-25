@@ -38,8 +38,11 @@ export class AffineMarker {
   private skew = 0;
   private top = 0;
   private left = 0;
+  private tx = 0;
+  private ty = 0;
+  private markerImg: HTMLImageElement;
 
-  constructor(private readonly matrix: IIFSMatrix) {
+  constructor(private matrix: IIFSMatrix, private readonly density: number) {
     this.transforms = decompose(this.matrix);
     this.render();
   }
@@ -71,10 +74,12 @@ export class AffineMarker {
   show(top: number, left: number, matrix: IIFSMatrix) {
     this.matrix = matrix;
     this.transforms = decompose(this.matrix);
+    this.angle = this.transforms.angle;
+    this.skew = this.transforms.skew;
     this.top = top;
     this.left = left;
 
-    const { scale, angle, skew } = this.transforms;
+    const { scale, angle, skew, translate } = this.transforms;
 
     this.$<HTMLInputElement>('.scale-x').value = String(scale.x);
     this.$<HTMLInputElement>('.scale-y').value = String(scale.y);
@@ -92,6 +97,25 @@ export class AffineMarker {
     this.element.style.left = `${this.left}px`;
     this.element.style.top = `${this.top}px`;
     this.element.style.display = 'block';
+
+    this.element.style.setProperty(
+      '--trans-text',
+      `"(${translate.x.toFixed(2)}, ${translate.y.toFixed(2)})"`,
+    );
+
+    if (!this.markerImg) {
+      const size =
+        parseInt(getComputedStyle(this.element).getPropertyValue('--marker-size'), 10) * 2;
+
+      const canv = document.createElement('canvas');
+      canv.width = size;
+      canv.height = size;
+      const ctx = canv.getContext('2d');
+      ctx.fillStyle = matrix.color;
+      ctx.fillRect(0, 0, size, size);
+      this.markerImg = document.createElement('img');
+      this.markerImg.src = canv.toDataURL();
+    }
   }
 
   onChange(fn: TOnChangeCB) {
@@ -109,9 +133,11 @@ export class AffineMarker {
     e.dataTransfer.setDragImage(elem('span'), 0, 0);
   };
 
-  handleDragEnd = () => {
+  handleDragEnd = (e: DragEvent) => {
     this.transforms.angle = this.angle;
     this.transforms.skew = this.skew;
+    this.transforms.translate.x += this.tx;
+    this.transforms.translate.y += this.ty;
     this.update();
   };
 
@@ -141,6 +167,38 @@ export class AffineMarker {
 
     this.$skew.style.setProperty('--skew-angle', `${c}deg`);
     this.$skew.style.setProperty('--skew-angle-txt', `"${c.toFixed(2)}°"`);
+  };
+
+  handleDragTranslateStart = (e: DragEvent) => {
+    const halfSize = this.markerImg.width / 2;
+    e.dataTransfer.setDragImage(this.markerImg, halfSize, halfSize);
+  };
+
+  handleDragTranslate = (e: DragEvent) => {
+    if (e.pageX + e.pageY === 0) {
+      return;
+    }
+
+    const a = this.element.getBoundingClientRect();
+    const cy = a.top + a.height / 2;
+    const cx = a.left + a.width / 2;
+    let dx = e.pageX - cx;
+    let dy = e.pageY - cy;
+    if (e.ctrlKey) {
+      if (Math.abs(dx) > Math.abs(dy)) {
+        dy = 0;
+      } else {
+        dx = 0;
+      }
+    }
+    this.tx = dx / this.density;
+    this.ty = dy / this.density;
+
+    const { translate } = this.transforms;
+    const tx = translate.x + this.tx;
+    const ty = translate.y + this.ty;
+
+    this.element.style.setProperty('--trans-text', `"(${tx.toFixed(2)}, ${ty.toFixed(2)})"`);
   };
 
   handleScaleXInput = (e: InputEvent) => {
@@ -213,6 +271,13 @@ export class AffineMarker {
             on-change={this.handleScaleYChange}
           />
         </div>
+        <div
+          draggable
+          class="trans"
+          on-dragstart={this.handleDragTranslateStart}
+          on-drag={this.handleDragTranslate}
+          on-dragend={this.handleDragEnd}
+        />
       </div>
     );
 

@@ -16,12 +16,16 @@ export abstract class Matrix {
   protected constructor(
     protected readonly name: string,
     public matrix: IIFSMatrix,
+    protected density: number,
     markerRoot: HTMLElement,
   ) {
     this.Probability = matrix.p;
     this.color = String(matrix.color);
     this.createMarker();
-    this.marker.onChange((m) => this.set(m));
+    this.marker.onChange((m) => {
+      this.set(m);
+      this.folder.updateDisplay();
+    });
     markerRoot.appendChild(this.marker.element);
   }
 

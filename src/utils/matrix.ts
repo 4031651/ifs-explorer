@@ -53,6 +53,6 @@ export function decompose(m: IIFSMatrix): TTransforms {
     angle,
     scale,
     skew,
-    translate: { x: e, y: f },
+    translate: { x: e || 0, y: f || 0 },
   };
 }
