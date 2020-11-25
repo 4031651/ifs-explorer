@@ -1,7 +1,7 @@
 import { IIFSMatrix } from 'fractals';
 
 import { elem } from '../../utils/dom';
-import { TTransforms, decompose, compose } from '../../utils/matrix';
+import { TTransforms, compose } from '../../utils/matrix';
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -29,10 +29,10 @@ const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
 
 // eslint-disable-next-line import/prefer-default-export
-export class AffineMarker {
+export abstract class BaseMarker {
   element: HTMLElement;
   private $skew: HTMLElement;
-  private transforms: TTransforms;
+  protected transforms: TTransforms;
   private changeFn: TOnChangeCB;
   private angle = 0;
   private skew = 0;
@@ -42,8 +42,8 @@ export class AffineMarker {
   private ty = 0;
   private markerImg: HTMLImageElement;
 
-  constructor(private matrix: IIFSMatrix, private readonly density: number) {
-    this.transforms = decompose(this.matrix);
+  constructor(protected matrix: IIFSMatrix, private readonly density: number) {
+    this.transforms = this.decompose();
     this.render();
   }
 
@@ -60,12 +60,22 @@ export class AffineMarker {
 
     const scaleX = this.$('.scale-x');
     scaleX.removeEventListener('input', this.handleScaleXInput);
+    scaleX.removeEventListener('change', this.handleScaleXChange);
 
     const scaleY = this.$('.scale-y');
     scaleY.removeEventListener('input', this.handleScaleYInput);
+    scaleY.removeEventListener('change', this.handleScaleYChange);
+
+    const trans = this.$('.trans');
+    trans.removeEventListener('dragstart', this.handleDragTranslateStart);
+    trans.removeEventListener('drag', this.handleDragTranslate);
+    trans.removeEventListener('dragend', this.handleDragEnd);
 
     this.element.remove();
   }
+
+  abstract decompose(): TTransforms;
+  abstract compose(): Partial<IIFSMatrix>;
 
   $<T extends HTMLElement = HTMLElement>(selector: string): T {
     return this.element.querySelector(selector);
@@ -73,7 +83,7 @@ export class AffineMarker {
 
   show(top: number, left: number, matrix: IIFSMatrix) {
     this.matrix = matrix;
-    this.transforms = decompose(this.matrix);
+    this.transforms = this.decompose();
     this.angle = this.transforms.angle;
     this.skew = this.transforms.skew;
     this.top = top;
@@ -125,7 +135,7 @@ export class AffineMarker {
   update() {
     this.changeFn({
       ...this.matrix,
-      ...compose(this.transforms),
+      ...this.compose(),
     });
   }
 

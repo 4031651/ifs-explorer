@@ -2,6 +2,7 @@ import { IIFSMatrix } from 'fractals';
 import * as dat from 'dat.gui';
 
 import { Matrix } from './Base';
+import { RadialMarker } from './markers/Radial';
 
 // eslint-disable-next-line import/prefer-default-export
 export class RadialMatrix extends Matrix {
@@ -19,18 +20,7 @@ export class RadialMatrix extends Matrix {
   }
 
   createMarker() {
-    this.marker = {
-      element: document.createElement('div'),
-      onChange() {
-        /* */
-      },
-      destroy() {
-        /* */
-      },
-      show() {
-        /* */
-      },
-    };
+    this.marker = new RadialMarker(this.toMatrix(), this.density);
   }
 
   set(m: IIFSMatrix) {
