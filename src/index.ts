@@ -1,6 +1,7 @@
 import { IFS, IIFSParams } from 'fractals';
 
 import { Explorer } from './Explorer';
+import { elem } from './utils/dom';
 
 const explorer = new Explorer();
 explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
@@ -56,11 +57,13 @@ explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
       const [maxx, maxy, minx, miny] = bounds[i];
       ctx.strokeRect(minx, miny, maxx - minx, maxy - miny);
 
-      const markerSize = 10;
-      const c = maxy - (maxy - miny) / 2;
-      const top = tOffset + canvas.height - c - padding - markerSize;
-      const left = lOffset + maxx - (maxx - minx) / 2 - offsetX + padding - markerSize;
-      explorer.showMarker(top, left, i);
+      const markerSize = 10 / 2;
+      const yMirror = canvas.height - (maxy - miny) - padding * 2;
+      const top = tOffset + padding + yMirror + (offsetY - miny);
+      const left = lOffset - offsetX + padding + minx;
+      const cx = (maxx - minx) / 2;
+      const cy = (maxy - miny) / 2;
+      explorer.showMarker(top + cy + markerSize, left + cx + markerSize, i);
     }
     ctx.setLineDash([]);
   }
