@@ -1,7 +1,7 @@
 import { IIFSMatrix } from 'fractals';
 
 import { elem } from '../../utils/dom';
-import { TTransforms, compose } from '../../utils/matrix';
+import { TTransforms } from '../../utils/matrix';
 
 function clamp(n: number, min: number, max: number) {
   return Math.max(min, Math.min(max, n));
@@ -143,7 +143,7 @@ export abstract class BaseMarker {
     e.dataTransfer.setDragImage(elem('span'), 0, 0);
   };
 
-  handleDragEnd = (e: DragEvent) => {
+  handleDragEnd = () => {
     this.transforms.angle = this.angle;
     this.transforms.skew = this.skew;
     this.transforms.translate.x += this.tx;
