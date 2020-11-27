@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import * as dat from 'dat.gui';
-import { IIFSParams, affine, radial } from 'fractals';
+import { IIFSParams, IIFSMatrix, affine, radial } from 'fractals';
+import formatHighlight from 'json-format-highlight';
 
 import { Matrix, AffineMatrix, RadialMatrix } from './controllers';
 import { elem } from './utils/dom';
@@ -32,6 +33,39 @@ const DEFAULTS = {
   iterations: 100000,
   equation: EQUATIONS[0],
 };
+
+const JSON_COLORS = {
+  keyColor: '#9876AA',
+  numberColor: '#6897BB',
+  stringColor: '#6A8759',
+  trueColor: '#CC7832',
+  falseColor: '#CC7832',
+  nullColor: '#CC7832',
+} as const;
+
+function formatIFSConfig(config: IIFSParams) {
+  const cfg = {
+    ...config,
+    matrices: config.matrices.map((m) => {
+      const { color, ...rest } = m;
+      return rest;
+    }),
+  };
+  return JSON.stringify(
+    cfg,
+    (k, v) => {
+      if (k === 'matrices') {
+        return v.map((m: IIFSMatrix) => `¤¤${JSON.stringify(m, null, ' ')}¤¤`);
+      }
+      return v;
+    },
+    2,
+  )
+    .replace(/\\"/g, '"')
+    .replace(/"¤¤{/g, '{')
+    .replace(/}¤¤"/g, ' }')
+    .replace(/\\n/g, '');
+}
 
 export class Explorer {
   private gui: dat.GUI;
@@ -69,6 +103,16 @@ export class Explorer {
     this.addSeparator();
 
     sidebar.appendChild(this.gui.domElement);
+
+    document.getElementById('export').addEventListener('click', this.export);
+    const copyBtn = document.getElementById('copy');
+    copyBtn.addEventListener('click', async () => {
+      await navigator.clipboard.writeText(formatIFSConfig(this.prepareConfig()));
+      copyBtn.innerText = 'Copied';
+      setTimeout(() => {
+        copyBtn.innerText = 'Copy';
+      }, 1000);
+    });
   }
 
   addSeparator() {
@@ -123,18 +167,26 @@ export class Explorer {
     this.update();
   };
 
-  update = () => {
+  prepareConfig() {
     const matrices = this.matrices.map((m) => m.toMatrix());
 
+    return {
+      density: this.Density,
+      iterations: this.Iterations,
+      equation: this.Equation,
+      matrices,
+    };
+  }
+
+  update = () => {
     this.changeFn(
       {
-        density: this.Density,
-        iterations: this.Iterations,
+        ...this.prepareConfig(),
         equation: this.Equation === 'radial' ? radial : affine,
-        matrices,
       },
       {
         showBounds: this['Show Bounds'],
+        preset: this.Preset,
       },
     );
   };
@@ -146,4 +198,12 @@ export class Explorer {
   showMarker(top: number, left: number, i: number) {
     this.matrices[i].showMarker(top, left);
   }
+
+  export = () => {
+    const dialog = <HTMLDialogElement>document.getElementById('dialog');
+    const config = formatIFSConfig(this.prepareConfig());
+
+    dialog.querySelector('pre').innerHTML = formatHighlight(config, JSON_COLORS);
+    dialog.showModal();
+  };
 }

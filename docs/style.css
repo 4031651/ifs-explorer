@@ -205,6 +205,84 @@ body {
   box-sizing: content-box;
 }
 
+dialog {
+  width: 60%;
+  min-width: 400px;
+  padding: 0;
+  background-color: #111e;
+  color: #eee;
+  border: 1px solid #2fa1d6;
+}
+
+dialog::backdrop {
+  background: #3333;
+  backdrop-filter: blur(1.4px);
+}
+
+dialog h1 {
+  background: #1a1a1a;
+  border-bottom: 1px solid #2c2c2c;
+  font: 120% 'Lucida Grande', sans-serif;
+  margin: 0;
+  padding: 0.5em 0;
+  text-align: center;
+}
+
+dialog form {
+  display: inline-block;
+}
+
+dialog menu {
+  margin: 0;
+  text-align: right;
+  border-top: 1px solid #2c2c2c;
+}
+
+dialog pre {
+  margin: 1em;
+  border: 1px solid #2c2c2c;
+  padding: 0.5em;
+  max-height: 65vh;
+  overflow: auto;
+}
+
+.txt-right {
+  text-align: right;
+}
+
+button {
+  background-color: #1a1a1a;
+  color: #eee;
+  border: 1px solid #2fa1d6;
+  margin: 0.5em;
+  font: 80% 'Lucida Grande', sans-serif;
+  outline: none;
+  width: 100px;
+  position: relative;
+  transition: 0.4s ease-in-out;
+}
+button svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  fill: none;
+  stroke: #fff;
+  stroke-dasharray: 150 480;
+  stroke-dashoffset: 150;
+  transition: 0.4s ease-in-out;
+}
+
+button:hover {
+  background-color: #303030;
+  transition: 0.4s ease-in-out;
+}
+button:hover svg {
+  stroke-dashoffset: -480;
+}
+button:active {
+  background-color: #3c3c3c;
+}
+
 .dg.main > .close-button {
   display: none;
 }

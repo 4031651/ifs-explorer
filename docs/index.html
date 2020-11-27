@@ -13,10 +13,54 @@
     <div class="app">
       <section class="sidebar">
         <div id="giu"></div>
+        <div class="txt-right">
+          <button id="export">
+            <svg
+              width="100%"
+              height="100%"
+              preserveAspectRatio="none"
+              viewBox="0 0 180 60"
+              class="border"
+            >
+              <polyline points="179,1 179,59 1,59 1,1 179,1" />
+            </svg>
+            Export
+          </button>
+        </div>
       </section>
       <main>
         <canvas id="canvas"></canvas>
       </main>
+      <dialog id="dialog">
+        <h1>Config</h1>
+        <pre>test</pre>
+        <menu>
+          <form method="dialog">
+            <button>
+              <svg
+                width="100%"
+                height="100%"
+                preserveAspectRatio="none"
+                viewBox="0 0 180 60"
+                class="border"
+              >
+                <polyline points="179,1 179,59 1,59 1,1 179,1" /></svg
+              >Close
+            </button>
+          </form>
+          <button id="copy">
+            <svg
+              width="100%"
+              height="100%"
+              preserveAspectRatio="none"
+              viewBox="0 0 180 60"
+              class="border"
+            >
+              <polyline points="179,1 179,59 1,59 1,1 179,1" /></svg
+            >Copy
+          </button>
+        </menu>
+      </dialog>
     </div>
 
     <script src="./index.js"></script>
