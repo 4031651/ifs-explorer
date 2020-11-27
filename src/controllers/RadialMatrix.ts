@@ -31,6 +31,7 @@ export class RadialMatrix extends Matrix {
     this['Translate X'] = m.e;
     this['Translate Y'] = m.f;
     this.Probability = m.p;
+    this.Color = m.color;
 
     this.handleChange();
   }
@@ -43,7 +44,7 @@ export class RadialMatrix extends Matrix {
       e: this['Translate X'],
       f: this['Translate Y'],
       p: this.Probability,
-      color: this.color,
+      color: this.Color,
     };
   }
 
@@ -56,5 +57,6 @@ export class RadialMatrix extends Matrix {
     this.folder.add(this, 'Translate X', -10, 10, 0.001).onFinishChange(this.handleChange);
     this.folder.add(this, 'Translate Y', -10, 10, 0.001).onFinishChange(this.handleChange);
     this.folder.add(this, 'Probability', 0, 1, 0.001).onFinishChange(this.handleChange);
+    this.folder.addColor(this, 'Color').onFinishChange(this.handleChangeColor);
   }
 }

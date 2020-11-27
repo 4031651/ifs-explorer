@@ -5,6 +5,7 @@ import formatHighlight from 'json-format-highlight';
 
 import { Matrix, AffineMatrix, RadialMatrix } from './controllers';
 import { elem } from './utils/dom';
+import { hslToHex } from './utils/color';
 
 import presets from './ifs.json';
 
@@ -77,7 +78,6 @@ export class Explorer {
   private Density = 50;
   private Iterations = 100000;
   private Equation = EQUATIONS[0];
-  private ['Show Bounds'] = false;
 
   constructor() {
     const sidebar = document.getElementById('giu');
@@ -91,7 +91,6 @@ export class Explorer {
       scrollable: true,
     });
 
-    this.gui.add(this, 'Show Bounds').onFinishChange(this.update);
     this.gui.add(this, 'Preset', PRESET_NAMES).onChange(this.load);
 
     this.addSeparator();
@@ -129,7 +128,7 @@ export class Explorer {
     const hChunk = 255 / config.matrices.length - 1;
 
     for (let i = 0; i < config.matrices.length; i++) {
-      const color = `hsl(${hChunk * i}, 100%, 50%)`;
+      const color = hslToHex(hChunk * i, 1, 0.5);
 
       const copy = { ...config.matrices[i], color };
       const mainElem = document.querySelector('main');
@@ -185,7 +184,6 @@ export class Explorer {
         equation: this.Equation === 'radial' ? radial : affine,
       },
       {
-        showBounds: this['Show Bounds'],
         preset: this.Preset,
       },
     );

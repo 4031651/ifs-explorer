@@ -94,6 +94,7 @@ export abstract class BaseMarker {
     this.$<HTMLInputElement>('.scale-y').value = String(scale.y);
 
     const rotation = angle * RAD_TO_DEG;
+    this.element.style.setProperty('--color', this.matrix.color);
     this.element.style.setProperty('--angle', `${rotation}deg`);
     this.element.style.setProperty('--angle-txt', `"${rotation.toFixed(2)}°"`);
     this.element.style.setProperty('--scale-x', `"${scale.x.toFixed(2)}"`);

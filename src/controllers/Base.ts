@@ -6,7 +6,7 @@ export abstract class Matrix {
   folder: dat.GUI;
   remover: HTMLAnchorElement;
   Probability = 0;
-  color: string;
+  Color: string;
   marker: AffineMarker;
 
   private changeFn: () => unknown;
@@ -19,7 +19,7 @@ export abstract class Matrix {
     markerRoot: HTMLElement,
   ) {
     this.Probability = matrix.p;
-    this.color = String(matrix.color);
+    this.Color = String(matrix.color);
     this.createMarker();
     this.marker.onChange((m) => {
       this.set(m);
@@ -38,6 +38,12 @@ export abstract class Matrix {
     e.preventDefault();
     this.removeFn?.();
     this.marker.destroy();
+  };
+
+  handleChangeColor = () => {
+    // eslint-disable-next-line no-underscore-dangle
+    (<HTMLLIElement>this.folder.__ul.firstElementChild).style.color = this.Color;
+    this.handleChange();
   };
 
   handleChange = () => {
@@ -62,7 +68,7 @@ export abstract class Matrix {
     // eslint-disable-next-line no-underscore-dangle
     this.folder.__ul.firstElementChild.appendChild(this.remover);
     // eslint-disable-next-line no-underscore-dangle
-    (<HTMLLIElement>this.folder.__ul.firstElementChild).style.color = this.color;
+    (<HTMLLIElement>this.folder.__ul.firstElementChild).style.color = this.Color;
     this.folder.unbind = () => {
       this.remover.removeEventListener('click', this.removeHandler);
     };

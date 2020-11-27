@@ -1,7 +1,6 @@
 import { IFS, IIFSParams } from 'fractals';
 
 import { Explorer } from './Explorer';
-import { elem } from './utils/dom';
 
 const explorer = new Explorer();
 explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
@@ -46,27 +45,25 @@ explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
     ctx.fillRect(x, y, 1, 1);
   }
 
-  if (!options.showBounds) {
-    const main = canvas.parentElement;
-    const lOffset = (main.clientWidth - canvas.width) / 2;
-    const tOffset = (main.clientHeight - canvas.height) / 2;
+  const main = canvas.parentElement;
+  const lOffset = (main.clientWidth - canvas.width) / 2;
+  const tOffset = (main.clientHeight - canvas.height) / 2;
 
-    ctx.setLineDash([5, 5]);
-    for (let i = 0; i < fractal.matrices.length; i++) {
-      ctx.strokeStyle = fractal.matrices[i].color;
-      const [maxx, maxy, minx, miny] = bounds[i];
-      ctx.strokeRect(minx, miny, maxx - minx, maxy - miny);
+  ctx.setLineDash([5, 5]);
+  for (let i = 0; i < fractal.matrices.length; i++) {
+    ctx.strokeStyle = fractal.matrices[i].color;
+    const [maxx, maxy, minx, miny] = bounds[i];
+    ctx.strokeRect(minx, miny, maxx - minx, maxy - miny);
 
-      const markerSize = 10 / 2;
-      const yMirror = canvas.height - (maxy - miny) - padding * 2;
-      const top = tOffset + padding + yMirror + (offsetY - miny);
-      const left = lOffset - offsetX + padding + minx;
-      const cx = (maxx - minx) / 2;
-      const cy = (maxy - miny) / 2;
-      explorer.showMarker(top + cy + markerSize, left + cx + markerSize, i);
-    }
-    ctx.setLineDash([]);
+    const markerSize = 10 / 2;
+    const yMirror = canvas.height - (maxy - miny) - padding * 2;
+    const top = tOffset + padding + yMirror + (offsetY - miny);
+    const left = lOffset - offsetX + padding + minx;
+    const cx = (maxx - minx) / 2;
+    const cy = (maxy - miny) / 2;
+    explorer.showMarker(top + cy + markerSize, left + cx + markerSize, i);
   }
+  ctx.setLineDash([]);
 
   ctx.restore();
 });

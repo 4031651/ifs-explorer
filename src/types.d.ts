@@ -10,3 +10,5 @@ declare namespace dat {
     unbind(): void;
   }
 }
+
+declare module 'json-format-highlight';
