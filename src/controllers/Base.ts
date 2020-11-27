@@ -2,7 +2,6 @@ import * as dat from 'dat.gui';
 import { IIFSMatrix } from 'fractals';
 import { AffineMarker } from './markers/Affine';
 
-// eslint-disable-next-line import/prefer-default-export
 export abstract class Matrix {
   folder: dat.GUI;
   remover: HTMLAnchorElement;

@@ -4,7 +4,6 @@ import { TTransforms, decompose, compose } from '../../utils/matrix';
 
 import { BaseMarker } from './Base';
 
-// eslint-disable-next-line import/prefer-default-export
 export class RadialMarker extends BaseMarker {
   decompose(): TTransforms {
     const { a, b, t } = this.matrix;

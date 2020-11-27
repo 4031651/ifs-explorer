@@ -4,7 +4,6 @@ import * as dat from 'dat.gui';
 import { Matrix } from './Base';
 import { RadialMarker } from './markers/Radial';
 
-// eslint-disable-next-line import/prefer-default-export
 export class RadialMatrix extends Matrix {
   ['Scale X'] = 0;
   ['Scale Y'] = 0;

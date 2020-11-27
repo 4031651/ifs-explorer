@@ -4,7 +4,6 @@ import * as dat from 'dat.gui';
 import { Matrix } from './Base';
 import { AffineMarker } from './markers/Affine';
 
-// eslint-disable-next-line import/prefer-default-export
 export class AffineMatrix extends Matrix {
   ['Xx Factor (a)'] = 0;
   ['Xy Factor (b)'] = 0;

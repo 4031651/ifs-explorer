@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 type TElemProps = {
   style?: Partial<CSSStyleDeclaration>;
   [k: string]: unknown;

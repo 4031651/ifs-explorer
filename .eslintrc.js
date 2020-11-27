@@ -28,5 +28,6 @@ module.exports = {
     'operator-linebreak': 0,
     'keyword-spacing': 0,
     'lines-between-class-members': [2, 'always', { exceptAfterSingleLine: true }],
+    'import/prefer-default-export': 0,
   },
 };

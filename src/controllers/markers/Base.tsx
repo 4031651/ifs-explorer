@@ -28,7 +28,6 @@ type TOnChangeCB = (p: IIFSMatrix) => unknown;
 const RAD_TO_DEG = 180 / Math.PI;
 const DEG_TO_RAD = Math.PI / 180;
 
-// eslint-disable-next-line import/prefer-default-export
 export abstract class BaseMarker {
   element: HTMLElement;
   private $skew: HTMLElement;
