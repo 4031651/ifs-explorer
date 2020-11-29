@@ -5,6 +5,10 @@ import { Matrix } from './Base';
 import { AffineMarker } from './markers/Affine';
 
 export class AffineMatrix extends Matrix {
+  static create(): IIFSMatrix {
+    return { a: 1, b: 0, c: 0, d: 1, e: 0, f: 0, p: 0.1 };
+  }
+
   ['Xx Factor (a)'] = 0;
   ['Xy Factor (b)'] = 0;
   ['Yx Factor (c)'] = 0;
@@ -28,7 +32,6 @@ export class AffineMatrix extends Matrix {
     this['Translate X'] = m.e;
     this['Translate Y'] = m.f;
     this.Probability = m.p;
-    this.Color = m.color;
 
     this.handleChange();
   }

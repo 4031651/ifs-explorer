@@ -98,6 +98,7 @@ export class Explorer {
     this.gui.add(this, 'Density', 1, 1000).onFinishChange(this.update);
     this.gui.add(this, 'Iterations', 10000, 1000000, 1000).onFinishChange(this.update);
     this.gui.add(this, 'Equation', EQUATIONS).onFinishChange(this.update);
+    this.gui.add(this, '➕ Add Matrix');
 
     this.addSeparator();
 
@@ -113,6 +114,30 @@ export class Explorer {
       }, 1000);
     });
   }
+
+  ['➕ Add Matrix'] = () => {
+    const Factory = this.Equation === 'affine' ? AffineMatrix : RadialMatrix;
+    const matrix = Factory.create();
+    matrix.color = '#000';
+    const name = `Matrix: ${this.matrices.length + 1}`;
+    const mainElem = document.querySelector('main');
+    const m = new Factory(name, matrix, this.Density, mainElem);
+
+    m.addControllers(this.gui);
+    m.onChange(this.update);
+    m.onRemove(() => {
+      const [removed] = this.matrices.splice(this.matrices.indexOf(m), 1);
+      this.gui.removeFolder(removed.folder);
+      this.update();
+    });
+    this.matrices.push(m);
+
+    const hChunk = 255 / this.matrices.length - 1;
+    for (let i = 0; i < this.matrices.length; i++) {
+      this.matrices[i].setColor(hslToHex(hChunk * i, 1, 0.5), false);
+    }
+    this.update();
+  };
 
   addSeparator() {
     const li = elem('li', { className: 'separator' }, elem('hr'));

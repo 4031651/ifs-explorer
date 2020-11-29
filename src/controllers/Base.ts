@@ -42,10 +42,17 @@ export abstract class Matrix {
   };
 
   handleChangeColor = () => {
+    this.setColor(this.Color);
+  };
+
+  setColor(color: string, shouldUpdate = true) {
+    this.Color = color;
     // eslint-disable-next-line no-underscore-dangle
     (<HTMLLIElement>this.folder.__ul.firstElementChild).style.color = this.Color;
-    this.handleChange();
-  };
+    if (shouldUpdate) {
+      this.handleChange();
+    }
+  }
 
   handleChange = () => {
     this.changeFn?.();

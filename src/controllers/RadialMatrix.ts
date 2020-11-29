@@ -5,6 +5,10 @@ import { Matrix } from './Base';
 import { RadialMarker } from './markers/Radial';
 
 export class RadialMatrix extends Matrix {
+  static create(): IIFSMatrix {
+    return { a: 1, b: 1, t: 0, e: 0, f: 0, p: 0.1 };
+  }
+
   ['Scale X'] = 0;
   ['Scale Y'] = 0;
   Theta = 0;
