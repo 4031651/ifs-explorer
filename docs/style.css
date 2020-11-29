@@ -308,15 +308,14 @@ main {
   --text-color: #eee;
   --trans-text: '(0, 0)';
   --line-width: 1px;
+  --b-width: 0;
+  --b-height: 0;
 
   position: absolute;
-  background-color: var(--color);
   width: var(--marker-size);
   height: var(--marker-size);
-  border: 1px solid var(--color);
   top: 0;
   left: 0;
-  transform: rotate(var(--angle));
 }
 
 .marker:hover,
@@ -335,7 +334,6 @@ main {
   border: 1px solid #000;
   background-color: var(--color);
 }
-
 .marker .trans:after {
   content: var(--trans-text);
   display: none;
@@ -344,7 +342,6 @@ main {
   white-space: nowrap;
   pointer-events: none;
 }
-
 .marker .trans:hover:after,
 .marker .trans:active:after {
   display: inline-block;
@@ -358,6 +355,8 @@ main {
   height: var(--box-size);
   margin-top: calc(var(--margin));
   margin-left: calc(var(--margin));
+  transform: rotate(var(--angle));
+
   position: relative;
   background: #000a;
   box-shadow: 2px 2px #000a, 2px -2px #000a, -2px 2px #000a, -2px -2px #000a;
@@ -388,6 +387,7 @@ main {
 .marker .box .r:active:after {
   display: inline-block;
 }
+
 .marker .box .s {
   --skew-angle: 0deg;
   --skew-angle-txt: '0°';
@@ -410,7 +410,6 @@ main {
   left: -4px;
   transform: rotate(calc(var(--back-angle) - var(--skew-angle)));
 }
-
 .marker .box .s > div:after {
   content: 'Skew ' var(--skew-angle-txt);
   display: none;
@@ -476,6 +475,16 @@ main {
 }
 .marker .box .scale-y:hover:after {
   display: inline-block;
+}
+
+.marker .bounds {
+  width: var(--b-width);
+  height: var(--b-height);
+  position: absolute;
+  top: calc(var(--marker-size) / -2 - var(--line-width));
+  left: calc(var(--marker-size) / -2 - var(--line-width));
+  border: var(--line-width) dashed var(--color);
+  transform: translate(-50%, -50%);
 }
 
 .dg ul li.separator {

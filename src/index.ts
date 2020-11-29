@@ -1,6 +1,7 @@
-import { IFS, IIFSParams } from 'fractals';
+import { IFS, IIFSParams, TBounds } from 'fractals';
 
 import { Explorer } from './Explorer';
+import { Bounds } from './utils/Bounds';
 
 const explorer = new Explorer();
 explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
@@ -29,7 +30,7 @@ explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
   ctx.translate(-offsetX + padding, offsetY + canvas.height - padding);
   ctx.scale(1, -1);
 
-  const bounds = Array.from(Array(fractal.matrices.length), () => [0, 0, 0, 0]);
+  const bounds: TBounds[] = Array.from(Array(fractal.matrices.length), () => [0, 0, 0, 0]);
 
   for (let i = 0; i < fractal.points.length; i++) {
     const [x, y, { matrixNum }] = fractal.points[i];
@@ -51,17 +52,15 @@ explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
 
   ctx.setLineDash([5, 5]);
   for (let i = 0; i < fractal.matrices.length; i++) {
-    ctx.strokeStyle = fractal.matrices[i].color;
-    const [maxx, maxy, minx, miny] = bounds[i];
-    ctx.strokeRect(minx, miny, maxx - minx, maxy - miny);
-
+    const bBox = new Bounds(bounds[i]);
     const markerSize = 10 / 2;
-    const yMirror = canvas.height - (maxy - miny) - padding * 2;
-    const top = tOffset + padding + yMirror + (offsetY - miny);
-    const left = lOffset - offsetX + padding + minx;
-    const cx = (maxx - minx) / 2;
-    const cy = (maxy - miny) / 2;
-    explorer.showMarker(top + cy + markerSize, left + cx + markerSize, i);
+    const yMirror = canvas.height - bBox.height - padding * 2;
+    const top = tOffset + padding + yMirror + (offsetY - bBox.minY);
+    const left = lOffset - offsetX + padding + bBox.minX;
+    const marketTop = top + bBox.cy + markerSize;
+    const markerLeft = left + bBox.cx + markerSize;
+
+    explorer.showMarker(i, marketTop, markerLeft, bBox.height, bBox.width);
   }
   ctx.setLineDash([]);
 

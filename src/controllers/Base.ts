@@ -8,6 +8,7 @@ export abstract class Matrix {
   Probability = 0;
   Color: string;
   marker: AffineMarker;
+  ['Show Marker'] = true;
 
   private changeFn: () => unknown;
   private removeFn: () => unknown;
@@ -50,6 +51,10 @@ export abstract class Matrix {
     this.changeFn?.();
   };
 
+  handleChangeMarkerVisibility = () => {
+    this.marker.setVisibility(this['Show Marker']);
+  };
+
   onChange(fn: () => unknown) {
     this.changeFn = fn;
   }
@@ -76,7 +81,11 @@ export abstract class Matrix {
     this.remover.addEventListener('click', this.removeHandler);
   }
 
-  showMarker(top: number, left: number) {
-    this.marker.show(top, left, this.toMatrix());
+  showMarker(top: number, left: number, height: number, width: number) {
+    if (this['Show Marker']) {
+      this.marker.show(top, left, height, width, this.toMatrix());
+    } else {
+      this.marker.setVisibility(false);
+    }
   }
 }

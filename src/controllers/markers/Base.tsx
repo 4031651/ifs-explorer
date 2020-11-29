@@ -1,4 +1,4 @@
-import { IIFSMatrix } from 'fractals';
+import { IIFSMatrix, TBounds } from 'fractals';
 
 import { elem } from '../../utils/dom';
 import { TTransforms } from '../../utils/matrix';
@@ -35,8 +35,8 @@ export abstract class BaseMarker {
   private changeFn: TOnChangeCB;
   private angle = 0;
   private skew = 0;
-  private top = 0;
-  private left = 0;
+  private top: number;
+  private left: number;
   private tx = 0;
   private ty = 0;
   private markerImg: HTMLImageElement;
@@ -80,7 +80,7 @@ export abstract class BaseMarker {
     return this.element.querySelector(selector);
   }
 
-  show(top: number, left: number, matrix: IIFSMatrix) {
+  show(top: number, left: number, height: number, width: number, matrix: IIFSMatrix) {
     this.matrix = matrix;
     this.transforms = this.decompose();
     this.angle = this.transforms.angle;
@@ -99,6 +99,8 @@ export abstract class BaseMarker {
     this.element.style.setProperty('--angle-txt', `"${rotation.toFixed(2)}°"`);
     this.element.style.setProperty('--scale-x', `"${scale.x.toFixed(2)}"`);
     this.element.style.setProperty('--scale-y', `"${scale.y.toFixed(2)}"`);
+    this.element.style.setProperty('--b-width', `${width}px`);
+    this.element.style.setProperty('--b-height', `${height}px`);
 
     const shear = skew * RAD_TO_DEG;
     this.$skew.style.setProperty('--skew-angle', `${shear}deg`);
@@ -125,6 +127,14 @@ export abstract class BaseMarker {
       ctx.fillRect(0, 0, size, size);
       this.markerImg = document.createElement('img');
       this.markerImg.src = canv.toDataURL();
+    }
+  }
+
+  setVisibility(visible: boolean) {
+    if (!visible) {
+      this.element.style.display = 'none';
+    } else if (this.top && this.left) {
+      this.element.style.display = 'block';
     }
   }
 
@@ -251,6 +261,7 @@ export abstract class BaseMarker {
           top: `${this.top}px`,
         }}
       >
+        <div class="bounds" />
         <div class="box">
           <div
             class="r"
@@ -297,6 +308,8 @@ export abstract class BaseMarker {
     this.element.style.setProperty('--angle-txt', `"${rotation.toFixed(2)}°"`);
     this.element.style.setProperty('--scale-x', `"${scale.x.toFixed(2)}"`);
     this.element.style.setProperty('--scale-y', `"${scale.y.toFixed(2)}"`);
+    this.element.style.setProperty('--b-width', '0');
+    this.element.style.setProperty('--b-height', '0');
 
     const shear = skew * RAD_TO_DEG;
     this.$skew.style.setProperty('--skew-angle', `${shear}deg`);

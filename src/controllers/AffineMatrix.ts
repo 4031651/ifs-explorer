@@ -60,6 +60,7 @@ export class AffineMatrix extends Matrix {
     this.folder.add(this, 'Translate X', -10, 10, 0.001).onFinishChange(this.handleChange);
     this.folder.add(this, 'Translate Y', -10, 10, 0.001).onFinishChange(this.handleChange);
     this.folder.add(this, 'Probability', 0, 1, 0.001).onFinishChange(this.handleChange);
+    this.folder.add(this, 'Show Marker').onFinishChange(this.handleChangeMarkerVisibility);
     this.folder.addColor(this, 'Color').onFinishChange(this.handleChangeColor);
   }
 }

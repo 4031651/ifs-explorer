@@ -193,8 +193,8 @@ export class Explorer {
     this.changeFn = fn;
   }
 
-  showMarker(top: number, left: number, i: number) {
-    this.matrices[i].showMarker(top, left);
+  showMarker(i: number, top: number, left: number, height: number, width: number) {
+    this.matrices[i].showMarker(top, left, height, width);
   }
 
   export = () => {
