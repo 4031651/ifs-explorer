@@ -2,6 +2,9 @@ import { IFS, IIFSParams, TBounds } from 'fractals';
 
 import { Explorer } from './Explorer';
 import { Bounds } from './utils/Bounds';
+import { download } from './utils/download';
+
+document.getElementById('save').addEventListener('click', download);
 
 const explorer = new Explorer();
 explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
@@ -23,9 +26,9 @@ explorer.onChange((params: IIFSParams, options: Record<string, unknown>) => {
 
   const ctx = canvas.getContext('2d');
 
-  ctx.fillStyle = '#000';
+  // ctx.fillStyle = '#000';
   ctx.save();
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  // ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   ctx.translate(-offsetX + padding, offsetY + canvas.height - padding);
   ctx.scale(1, -1);
